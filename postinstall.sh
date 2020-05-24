@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $EUID -ne 0 ]]; then
-   	echo "This script must be run as root" 
+   	echo "This script must be run as root"
    	exit 1
 else
 	#Update and Upgrade
@@ -15,24 +15,24 @@ else
 
 	sudo apt-get install dialog
 	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 22 76 16)
-	options=(	
+	options=(
 			#Drivers
 			1 "Debian Preliminaries" off
 			2 "ThinkPad L480 drivers" off
-			
+
 			#Desktop Environments
 			3 "xfce4" off
-			
+
 			#Communication
 			4 "GnuPG" off
 			5 "Signal Messenger" off
 			6 "WhatsApp" off
 			7 "Tutanota" off
-			
+
 			#Development
 	         	8 "Atom" off
 			9 "Geany" off
-			
+
 			)
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
@@ -44,7 +44,7 @@ else
 				echo "Debian Preliminaries"
 				apt install firmware-linux dkms build-essential firmware-iwlwifi -y
 				;;
-				
+
 	        	2)
 	            		#Thinkpad L480 Drivers
 				echo "Fixing trackpad issue"
@@ -68,6 +68,9 @@ else
 				echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list
 				apt update
 				apt-get install atom -y
+        #Fix permissions prior to first run
+				chown root:root /usr/share/atom/chrome-sandbox
+				chmod 4755 /usr/share/atom/chrome-sandbox
 				;;
 
 

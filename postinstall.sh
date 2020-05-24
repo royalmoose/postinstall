@@ -15,24 +15,54 @@ else
 
 	sudo apt-get install dialog
 	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 22 76 16)
-	options=(1 "Signal" off    # any option can be set to default to "on"
-	         2 "Atom" off)
+	options=(	
+			#Drivers
+			1 "Debian Preliminaries" off
+			2 "ThinkPad L480 drivers" off
+			
+			#Desktop Environments
+			3 "xfce4" off
+			
+			#Communication
+			4 "GnuPG" off
+			5 "Signal Messenger" off
+			6 "WhatsApp" off
+			7 "Tutanota" off
+			
+			#Development
+	         	8 "Atom" off
+			9 "Geany" off
+			
+			)
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
 		for choice in $choices
 		do
 		    case $choice in
 	        	1)
-	            		#Signal*
-				echo "Signal"
+	            		#Debian Preliminaries
+				echo "Debian Preliminaries"
+				apt install firmware-linux dkms build-essential firmware-iwlwifi -y
+				;;
+				
+	        	2)
+	            		#Thinkpad L480 Drivers
+				echo "Fixing trackpad issue"
+				echo -n "elantech" > sys/bus/serio/sevices/serio/prorocol
+				echo "Applying permanent fix"
+				sed -i 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="psmouse.elantech_smbus=0"/g' /etc/default/grub
+				;;
+	        	5)
+	            		#Signal Messenger
+				echo "Installing Signal Messenger"
 				wget https://updates.signal.org/desktop/apt/keys.asc | apt-key add keys.asc
 				echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | tee -a /etc/apt/sources.list.d/signal-xenial.list
 				apt update
 				apt install signal-desktop -y
 				rm -f keys.asc
 				;;
-	        	2)
-	            		#Signal*
+	        	8)
+	            		#Atom
 				echo "Atom"
 				wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
 				echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list

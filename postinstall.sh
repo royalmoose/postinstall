@@ -71,6 +71,11 @@ else
         #Fix permissions prior to first run
 				chown root:root /usr/share/atom/chrome-sandbox
 				chmod 4755 /usr/share/atom/chrome-sandbox
+        #Git config
+        git config --global user.name royalmoose
+        git config --global user.email moosie@tutanota.de
+        git config --global user.signingkey A72F6D82CCE9EF8F
+
 				;;
 
 

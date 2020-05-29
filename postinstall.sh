@@ -13,7 +13,7 @@ else
 	sudo sed -i 's/ main.*/ main contrib non-free/g' /etc/apt/sources.list
 	sudo sed -i 's/.*deb cdrom/# deb cdrom/g' /etc/apt/sources.list
 
-	sudo apt-get install dialog
+	sudo apt-get install dialog wget 
 	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 22 76 16)
 	options=(
 			#Drivers
